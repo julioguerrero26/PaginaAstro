@@ -571,6 +571,7 @@ const {
         const title = wrapper.querySelector('.titulo')?.textContent || '';
         const priceText = wrapper.querySelector('.precio')?.textContent || '';
         const imgUrl = wrapper.querySelector('.img-container img')?.getAttribute('src') || '';
+        const categoria = wrapper.getAttribute('data-categoria') || '';
 
         // Función para despachar el evento de agregar al carrito
         const addToCart = (cantidad) => {
@@ -581,7 +582,8 @@ const {
                     titulo: title,
                     precio: priceText,
                     imagen: imgUrl,
-                    cantidad: cantidad
+                    cantidad: cantidad,
+                    categoria: categoria
                 }
             });
             window.dispatchEvent(event);

@@ -1,134 +1,184 @@
 ---
-import Menu from '../components/Menu.astro';
-import FoodCard from '../components/FoodCard.astro';
-import ParticleBackground from '../components/ParticleBackground.astro';
-import '../Styles/custom.css';
-import leonImg from '../assets/bullterrier.png';
+import Menu from "../components/Menu.astro";
+import FoodCard from "../components/FoodCard.astro";
+import ParticleBackground from "../components/ParticleBackground.astro";
+import "../Styles/custom.css";
+import leonImg from "../assets/bullterrier.png";
 ---
 
 <html lang="es">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Byte & Bite Bistro | Tópicos Avanzados de Programación</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
-<ParticleBackground />
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Byte & Bite Bistro | Tópicos Avanzados de Programación</title>
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Outfit:wght@400;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <ParticleBackground />
 
-<Menu>
-    <div class="hero-section">
-        <div class="hero-text">
-            <span class="hero-badge">&lt;terminal_bistro&gt;</span>
-            <h1>Byte & Bite Bistro</h1>
-            <p>Compilando el sabor en tiempo de ejecución. El primer menú gourmet optimizado para desarrolladores de alto rendimiento.</p>
-            <div class="hero-meta">
-                <span class="meta-tag">⚡ Latencia O(1)</span>
-                <span class="meta-tag">🛡️ Sandbox Safe</span>
+        <Menu>
+            <div class="hero-section">
+                <div class="hero-text">
+                    <span class="hero-badge">&lt;terminal_bistro&gt;</span>
+                    <h1>Byte & Bite Bistro</h1>
+                    <p>
+                        Compilando el sabor en tiempo de ejecución. El primer
+                        menú gourmet optimizado para desarrolladores de alto
+                        rendimiento.
+                    </p>
+                    <div class="hero-meta">
+                        <span class="meta-tag">⚡ Latencia O(1)</span>
+                        <span class="meta-tag">🛡️ Sandbox Safe</span>
+                    </div>
+                </div>
+                <div class="hero-image-container">
+                    <img
+                        src={leonImg.src}
+                        alt="Bull Terrier Programador"
+                        class="hero-image"
+                    />
+                    <div class="hero-image-glow"></div>
+                </div>
             </div>
-        </div>
-        <div class="hero-image-container">
-            <img src={leonImg.src} alt="Bull Terrier Programador" class="hero-image" />
-            <div class="hero-image-glow"></div>
-        </div>
-    </div>
 
-    <div class="cards-grid">
-        <FoodCard
-                titulo="Algoritmos al Ajillo"
-                descripcion="Una mezcla de búsqueda binaria con un toque de ajo y especias."
-                precio="$120.00"
-                imagen="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop"
-                detalles="Este platillo está inspirado en la eficiencia de la búsqueda binaria. Primero cortamos los ingredientes a la mitad, luego otra vez a la mitad, hasta llegar a la porción perfecta. Viene acompañado de una salsa de ajo que te dejará un aliento O(1)."
-                categoria="algoritmos"
-                tags={["O(log N)", "Búsqueda", "Binary Search"]}
-        />
+            <!-- Live Kitchen Stream Section -->
+            <div class="live-kitchen-section">
+                <div class="terminal-video-container">
+                    <div class="terminal-video-header">
+                        <div class="terminal-video-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-video-title"
+                            >live_kitchen_stream.mp4 [STATUS: RUNNING]</span
+                        >
+                        <span class="terminal-video-fps"
+                            >FPS: 60.0 | LATENCY: 0.1ms</span
+                        >
+                    </div>
+                    <div class="terminal-video-body">
+                        <video
+                            autoplay
+                            muted
+                            loop
+                            playsinline
+                            class="kitchen-video"
+                        >
+                            <source src="/food.mp4" type="video/mp4" />
+                        </video>
+                        <div class="video-overlay-text">
+                            <div class="rec-indicator">
+                                <span class="rec-dot"></span>
+                                <span class="rec-text">LIVE FEED</span>
+                            </div>
+                            <p class="console-overlay-log">
+                                > Compilando sabor en tiempo real...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <FoodCard
-                titulo="Estructuras en Salsa"
-                descripcion="Árboles binarios bañados en salsa verde tradicional."
-                precio="$95.00"
-                imagen="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop"
-                detalles="Nuestros árboles binarios son cultivados orgánicamente. Cada nodo contiene un sabor distinto y están perfectamente balanceados (como un árbol AVL) para que tu digestión no sufra. La salsa verde está picosita."
-                categoria="estructuras"
-                tags={["AVL Tree", "O(log N)", "Self-Balancing"]}
-        />
+            <div class="cards-grid">
+                <FoodCard
+                    titulo="Algoritmos al Ajillo"
+                    descripcion="Una mezcla de búsqueda binaria con un toque de ajo y especias."
+                    precio="$120.00"
+                    imagen="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop"
+                    detalles="Este platillo está inspirado en la eficiencia de la búsqueda binaria. Primero cortamos los ingredientes a la mitad, luego otra vez a la mitad, hasta llegar a la porción perfecta. Viene acompañado de una salsa de ajo que te dejará un aliento O(1)."
+                    categoria="algoritmos"
+                    tags={["O(log N)", "Búsqueda", "Binary Search"]}
+                />
 
-        <FoodCard
-                titulo="Query de Mariscos"
-                descripcion="Una consulta compleja de camarones, pulpo y almejas."
-                precio="$180.00"
-                imagen="https://images.unsplash.com/photo-1606850780554-b55ea4dd0b70?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                detalles="Este platillo ejecuta un INNER JOIN entre los mejores mariscos de la costa y una base de arroz blanco. Está indexado para que el sabor llegue a tu paladar en milisegundos. ¡Cuidado con las inyecciones de picante!"
-                categoria="redes"
-                tags={["SQL", "INNER JOIN", "Optimized INDEX"]}
-        />
+                <FoodCard
+                    titulo="Estructuras en Salsa"
+                    descripcion="Árboles binarios bañados en salsa verde tradicional."
+                    precio="$95.00"
+                    imagen="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop"
+                    detalles="Nuestros árboles binarios son cultivados orgánicamente. Cada nodo contiene un sabor distinto y están perfectamente balanceados (como un árbol AVL) para que tu digestión no sufra. La salsa verde está picosita."
+                    categoria="estructuras"
+                    tags={["AVL Tree", "O(log N)", "Self-Balancing"]}
+                />
 
-        <FoodCard
-                titulo="Pasta Firewall"
-                descripcion="Espagueti con una barrera de queso parmesano contra el hambre."
-                precio="$110.00"
-                imagen="https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=800&auto=format&fit=crop"
-                detalles="Nuestra pasta actúa como un proxy inverso: filtra el hambre y solo deja pasar la satisfacción. Viene con una capa de seguridad de albóndigas encriptadas en salsa pomodoro. Nadie podrá hackear tu apetito."
-                categoria="redes"
-                tags={["Security", "Proxy", "WAF Rules"]}
-        />
+                <FoodCard
+                    titulo="Query de Mariscos"
+                    descripcion="Una consulta compleja de camarones, pulpo y almejas."
+                    precio="$180.00"
+                    imagen="https://images.unsplash.com/photo-1606850780554-b55ea4dd0b70?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    detalles="Este platillo ejecuta un INNER JOIN entre los mejores mariscos de la costa y una base de arroz blanco. Está indexado para que el sabor llegue a tu paladar en milisegundos. ¡Cuidado con las inyecciones de picante!"
+                    categoria="redes"
+                    tags={["SQL", "INNER JOIN", "Optimized INDEX"]}
+                />
 
-        <FoodCard
-                titulo="Tacos de Ensamblador"
-                descripcion="Tacos de bajo nivel, directo al hardware del estómago."
-                precio="$85.00"
-                imagen="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop"
-                detalles="Estos tacos no usan librerías externas. Son de pastor puro programado en registro por registro. Cada bocado mueve 8 bits de sabor directamente a tu memoria central. Incluye interrupciones de cebolla y cilantro."
-                categoria="sistemas"
-                tags={["Assembly x86", "Low-Level", "Bare Metal"]}
-        />
+                <FoodCard
+                    titulo="Pasta Firewall"
+                    descripcion="Espagueti con una barrera de queso parmesano contra el hambre."
+                    precio="$110.00"
+                    imagen="https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=800&auto=format&fit=crop"
+                    detalles="Nuestra pasta actúa como un proxy inverso: filtra el hambre y solo deja pasar la satisfacción. Viene con una capa de seguridad de albóndigas encriptadas en salsa pomodoro. Nadie podrá hackear tu apetito."
+                    categoria="redes"
+                    tags={["Security", "Proxy", "WAF Rules"]}
+                />
 
-        <FoodCard
-                titulo="Cloud Burger"
-                descripcion="Hamburguesa distribuida en múltiples capas de sabor."
-                precio="$145.00"
-                imagen="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop"
-                detalles="Una hamburguesa escalable que se adapta a tu hambre. Cuenta con alta disponibilidad de tocino y un balanceador de carga de queso cheddar. Si el hambre aumenta, ¡añadimos otra capa automáticamente!"
-                categoria="redes"
-                tags={["Load Balancer", "High Availability", "AWS"]}
-        />
+                <FoodCard
+                    titulo="Tacos de Ensamblador"
+                    descripcion="Tacos de bajo nivel, directo al hardware del estómago."
+                    precio="$85.00"
+                    imagen="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop"
+                    detalles="Estos tacos no usan librerías externas. Son de pastor puro programado en registro por registro. Cada bocado mueve 8 bits de sabor directamente a tu memoria central. Incluye interrupciones de cebolla y cilantro."
+                    categoria="sistemas"
+                    tags={["Assembly x86", "Low-Level", "Bare Metal"]}
+                />
 
-        <FoodCard
-                titulo="Ramen Recursivo"
-                descripcion="Un bucle infinito de fideos y sabor que se llama a sí mismo."
-                precio="$135.00"
-                imagen="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=800&auto=format&fit=crop"
-                detalles="Este platillo se sirve en un tazón que parece no tener fin. La experiencia es recursiva: cada bocado te lleva a otro bocado más profundo hasta que alcanzas el caso base: el fondo del plato. Si no tienes cuidado, podrías sufrir un Stack Overflow de sabor."
-                categoria="algoritmos"
-                tags={["Recursion", "Stack Memory", "Base Case"]}
-        />
+                <FoodCard
+                    titulo="Cloud Burger"
+                    descripcion="Hamburguesa distribuida en múltiples capas de sabor."
+                    precio="$145.00"
+                    imagen="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop"
+                    detalles="Una hamburguesa escalable que se adapta a tu hambre. Cuenta con alta disponibilidad de tocino y un balanceador de carga de queso cheddar. Si el hambre aumenta, ¡añadimos otra capa automáticamente!"
+                    categoria="redes"
+                    tags={["Load Balancer", "High Availability", "AWS"]}
+                />
 
-        <FoodCard
-                titulo="Sopa de Kernel"
-                descripcion="Sopa monolítica compilada con los mejores módulos del huerto."
-                precio="$80.00"
-                imagen="https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=800&auto=format&fit=crop"
-                detalles="Una sopa optimizada para cualquier hardware digestivo. Es modular, así que puedes añadirle 'parches' de chile o limón en tiempo de ejecución sin necesidad de reiniciar tu comida. Es de código abierto, así que si te gusta, te pasamos la receta (el source code)."
-                categoria="sistemas"
-                tags={["OS Kernel", "Monolithic", "Open Source"]}
-        />
+                <FoodCard
+                    titulo="Ramen Recursivo"
+                    descripcion="Un bucle infinito de fideos y sabor que se llama a sí mismo."
+                    precio="$135.00"
+                    imagen="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=800&auto=format&fit=crop"
+                    detalles="Este platillo se sirve en un tazón que parece no tener fin. La experiencia es recursiva: cada bocado te lleva a otro bocado más profundo hasta que alcanzas el caso base: el fondo del plato. Si no tienes cuidado, podrías sufrir un Stack Overflow de sabor."
+                    categoria="algoritmos"
+                    tags={["Recursion", "Stack Memory", "Base Case"]}
+                />
 
-        <FoodCard
-                titulo="Sushi en Paralelo"
-                descripcion="Rollos distribuidos que se procesan simultáneamente en tu paladar."
-                precio="$165.00"
-                imagen="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800&auto=format&fit=crop"
-                detalles="Olvídate del procesamiento secuencial. Estos rollos están diseñados para ser consumidos en hilos separados. Cada pieza llega a tus papilas gustativas mediante una arquitectura de alta disponibilidad, garantizando que el sabor no tenga cuellos de botella."
-                categoria="algoritmos"
-                tags={["Concurrency", "Multi-threading", "Parallel"]}
-        />
-    </div>
-</Menu>
-</body>
+                <FoodCard
+                    titulo="Sopa de Kernel"
+                    descripcion="Sopa monolítica compilada con los mejores módulos del huerto."
+                    precio="$80.00"
+                    imagen="https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=800&auto=format&fit=crop"
+                    detalles="Una sopa optimizada para cualquier hardware digestivo. Es modular, así que puedes añadirle 'parches' de chile o limón en tiempo de ejecución sin necesidad de reiniciar tu comida. Es de código abierto, así que si te gusta, te pasamos la receta (el source code)."
+                    categoria="sistemas"
+                    tags={["OS Kernel", "Monolithic", "Open Source"]}
+                />
+
+                <FoodCard
+                    titulo="Sushi en Paralelo"
+                    descripcion="Rollos distribuidos que se procesan simultáneamente en tu paladar."
+                    precio="$165.00"
+                    imagen="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800&auto=format&fit=crop"
+                    detalles="Olvídate del procesamiento secuencial. Estos rollos están diseñados para ser consumidos en hilos separados. Cada pieza llega a tus papilas gustativas mediante una arquitectura de alta disponibilidad, garantizando que el sabor no tenga cuellos de botella."
+                    categoria="algoritmos"
+                    tags={["Concurrency", "Multi-threading", "Parallel"]}
+                />
+            </div>
+        </Menu>
+    </body>
 </html>
 
 <style>
@@ -151,7 +201,7 @@ import leonImg from '../assets/bullterrier.png';
     }
 
     .hero-badge {
-        font-family: 'Fira Code', monospace;
+        font-family: "Fira Code", monospace;
         font-size: 0.85rem;
         color: var(--brand-cyan);
         background: rgba(6, 182, 212, 0.1);
@@ -165,7 +215,12 @@ import leonImg from '../assets/bullterrier.png';
     .hero-section h1 {
         font-size: 3.8rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #a5b4fc 10%, #06b6d4 50%, #ec4899 90%);
+        background: linear-gradient(
+            135deg,
+            #a5b4fc 10%,
+            #06b6d4 50%,
+            #ec4899 90%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-top: 1rem;
@@ -218,7 +273,12 @@ import leonImg from '../assets/bullterrier.png';
         position: absolute;
         width: 260px;
         height: 260px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 70%);
+        background: radial-gradient(
+            circle,
+            rgba(99, 102, 241, 0.25) 0%,
+            rgba(6, 182, 212, 0.05) 50%,
+            transparent 70%
+        );
         border-radius: 50%;
         filter: blur(10px);
         z-index: 1;
@@ -226,7 +286,8 @@ import leonImg from '../assets/bullterrier.png';
     }
 
     @keyframes float {
-        0%, 100% {
+        0%,
+        100% {
             transform: translateY(0) rotate(0deg);
         }
         50% {
@@ -241,7 +302,7 @@ import leonImg from '../assets/bullterrier.png';
         }
         100% {
             transform: scale(1.1);
-            opacity: 1.0;
+            opacity: 1;
         }
     }
 
@@ -282,6 +343,154 @@ import leonImg from '../assets/bullterrier.png';
         .hero-image {
             width: 240px;
             height: 240px;
+        }
+    }
+
+    /* Live Kitchen Section Styles */
+    .live-kitchen-section {
+        max-width: 1200px;
+        margin: 0 auto 3rem auto;
+        padding: 0 1.5rem;
+        position: relative;
+        z-index: 10;
+    }
+
+    .terminal-video-container {
+        background: #05070c;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.4),
+            0 0 20px rgba(6, 182, 212, 0.05);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .terminal-video-header {
+        background: #0f172a;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-family: "Fira Code", monospace;
+    }
+
+    .terminal-video-dots {
+        display: flex;
+        gap: 6px;
+    }
+
+    .terminal-video-dots .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .terminal-video-dots .dot.red {
+        background: #ef4444;
+    }
+    .terminal-video-dots .dot.yellow {
+        background: #f59e0b;
+    }
+    .terminal-video-dots .dot.green {
+        background: #10b981;
+    }
+
+    .terminal-video-title {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .terminal-video-fps {
+        color: var(--brand-cyan);
+        font-size: 0.7rem;
+        opacity: 0.8;
+    }
+
+    .terminal-video-body {
+        position: relative;
+        height: 320px;
+        width: 100%;
+        overflow: hidden;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .kitchen-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.75;
+    }
+
+    .video-overlay-text {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        pointer-events: none;
+    }
+
+    .rec-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(239, 68, 68, 0.25);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        padding: 4px 10px;
+        border-radius: 6px;
+        width: fit-content;
+    }
+
+    .rec-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ef4444;
+        animation: recBlink 1.5s infinite;
+    }
+
+    .rec-text {
+        color: #fca5a5;
+        font-size: 0.7rem;
+        font-weight: 700;
+        font-family: "Fira Code", monospace;
+    }
+
+    .console-overlay-log {
+        color: var(--brand-cyan);
+        font-family: "Fira Code", monospace;
+        font-size: 0.8rem;
+        margin: 0;
+        text-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+    }
+
+    @keyframes recBlink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.4;
+        }
+    }
+
+    @media (max-width: 850px) {
+        .terminal-video-body {
+            height: 220px;
+        }
+        .terminal-video-fps {
+            display: none;
         }
     }
 </style>

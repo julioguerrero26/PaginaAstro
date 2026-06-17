@@ -46,12 +46,15 @@
 }
 
 /* Base resets */
-html, body {
+html {
+    background-color: var(--bg-primary);
+}
+body {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow: hidden;
-    background-color: var(--bg-primary);
+    background-color: transparent !important;
     color: var(--text-primary);
     font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;

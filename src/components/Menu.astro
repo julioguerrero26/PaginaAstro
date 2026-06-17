@@ -432,9 +432,15 @@
         align-items: center;
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.05);
-        padding: 8px;
+        padding: 8px 12px;
         border-radius: 10px;
         animation: slideIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        will-change: transform, opacity;
+    }
+
+    .cart-item.removing {
+        animation: slideOut 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+        pointer-events: none;
     }
 
     @keyframes slideIn {
@@ -448,12 +454,44 @@
         }
     }
 
-    .cart-item-img {
-        width: 44px;
-        height: 44px;
-        border-radius: 6px;
-        object-fit: cover;
-        background: #090e1a;
+    @keyframes slideOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+            max-height: 80px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-width: 1px;
+        }
+        to {
+            opacity: 0;
+            transform: translateX(-30px);
+            max-height: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 0;
+            border-width: 0;
+            overflow: hidden;
+        }
+    }
+
+    .pulse-bump {
+        animation: pulseBump 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes pulseBump {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.35);
+            color: var(--brand-cyan);
+            text-shadow: 0 0 8px rgba(6, 182, 212, 0.6);
+        }
+        100% {
+            transform: scale(1);
+        }
     }
 
     .cart-item-info {
@@ -471,7 +509,19 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 130px;
+        max-width: 170px;
+    }
+
+    .cart-item-meta {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .cart-item-category {
+        font-family: 'Fira Code', monospace;
+        font-size: 0.7rem;
+        color: var(--text-muted);
     }
 
     .cart-item-price {
@@ -516,6 +566,8 @@
         width: 18px;
         text-align: center;
         color: var(--text-primary);
+        display: inline-block;
+        will-change: transform;
     }
 
     .cart-item-remove {
@@ -917,6 +969,18 @@
         updateUI();
     };
 
+    // Helper to get category code (filter of each order)
+    const getCategoryCode = (cat) => {
+        if (!cat) return '[./*]';
+        const mapping = {
+            'algoritmos': '[./alg]',
+            'estructuras': '[./ds]',
+            'sistemas': '[./sys]',
+            'redes': '[./net]'
+        };
+        return mapping[cat.toLowerCase()] || `[./${cat.substring(0, 3)}]`;
+    };
+
     // Update UI elements
     const updateUI = () => {
         if (!cartItemsContainer || !emptyCartState || !cartSummary || !summaryItems || !summaryTotal || !cartCountIndicator) return;
@@ -928,7 +992,21 @@
         if (cart.length === 0) {
             emptyCartState.style.display = 'block';
             cartSummary.classList.add('hidden');
-            cartItemsContainer.innerHTML = '';
+            
+            // If items are currently visible, animate their removal or clear them
+            const items = cartItemsContainer.querySelectorAll('.cart-item');
+            if (items.length > 0) {
+                items.forEach(el => {
+                    if (!el.classList.contains('removing')) {
+                        el.classList.add('removing');
+                        el.addEventListener('animationend', () => {
+                            el.remove();
+                        });
+                    }
+                });
+            } else {
+                cartItemsContainer.innerHTML = '';
+            }
             return;
         }
 
@@ -940,56 +1018,124 @@
         summaryTotal.textContent = `$${totalVal.toFixed(2)}`;
         summaryItems.textContent = totalItemsCount.toString();
 
-        // Render items list
-        cartItemsContainer.innerHTML = '';
-        cart.forEach(item => {
-            const itemEl = document.createElement('div');
-            itemEl.className = 'cart-item';
-            itemEl.innerHTML = `
-                <img src="${item.imagen}" alt="${item.titulo}" class="cart-item-img" />
-                <div class="cart-item-info">
-                    <p class="cart-item-title">${item.titulo}</p>
-                    <span class="cart-item-price">${item.precio}</span>
-                </div>
-                <div class="cart-item-controls">
-                    <button class="cart-qty-btn cart-minus" data-id="${item.id}">-</button>
-                    <span class="cart-item-qty">${item.cantidad}</span>
-                    <button class="cart-qty-btn cart-plus" data-id="${item.id}">+</button>
-                </div>
-                <button class="cart-item-remove" data-id="${item.id}" title="Remover de la memoria">
-                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                </button>
-            `;
-            
-            // Wire events inside item
-            itemEl.querySelector('.cart-minus')?.addEventListener('click', () => adjustQty(item.id, -1));
-            itemEl.querySelector('.cart-plus')?.addEventListener('click', () => adjustQty(item.id, 1));
-            itemEl.querySelector('.cart-item-remove')?.addEventListener('click', () => removeCartItem(item.id));
+        // DOM Reconciliation
+        // 1. Remove elements no longer in the cart
+        const cartIds = new Set(cart.map(item => item.id));
+        const currentElements = cartItemsContainer.querySelectorAll('.cart-item');
+        currentElements.forEach(el => {
+            const id = el.getAttribute('data-id');
+            if (!cartIds.has(id) && !el.classList.contains('removing')) {
+                el.classList.add('removing');
+                el.addEventListener('animationend', () => {
+                    el.remove();
+                });
+            }
+        });
 
-            cartItemsContainer.appendChild(itemEl);
+        // 2. Create or update elements matching order
+        cart.forEach(item => {
+            let itemEl = cartItemsContainer.querySelector(`.cart-item[data-id="${item.id}"]`);
+            
+            if (itemEl) {
+                // If it is in removing state, skip
+                if (itemEl.classList.contains('removing')) return;
+
+                // Update quantity count with a pulse bump animation
+                const qtyEl = itemEl.querySelector('.cart-item-qty');
+                if (qtyEl && qtyEl.textContent !== item.cantidad.toString()) {
+                    qtyEl.textContent = item.cantidad.toString();
+                    qtyEl.classList.remove('pulse-bump');
+                    void qtyEl.offsetWidth; // trigger reflow
+                    qtyEl.classList.add('pulse-bump');
+                }
+
+                // Update total price per item
+                const priceEl = itemEl.querySelector('.cart-item-price');
+                if (priceEl) {
+                    const itemTotal = item.precioNum * item.cantidad;
+                    priceEl.textContent = `$${itemTotal.toFixed(2)}`;
+                }
+            } else {
+                // Create item element
+                itemEl = document.createElement('div');
+                itemEl.className = 'cart-item';
+                itemEl.setAttribute('data-id', item.id);
+                const itemTotal = item.precioNum * item.cantidad;
+                itemEl.innerHTML = `
+                    <div class="cart-item-info">
+                        <p class="cart-item-title">${item.titulo}</p>
+                        <div class="cart-item-meta">
+                            <span class="cart-item-category">${getCategoryCode(item.categoria)}</span>
+                            <span class="cart-item-price">$${itemTotal.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="cart-qty-btn cart-minus">-</button>
+                        <span class="cart-item-qty">${item.cantidad}</span>
+                        <button class="cart-qty-btn cart-plus">+</button>
+                    </div>
+                    <button class="cart-item-remove" title="Remover de la memoria">
+                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                `;
+                
+                // Wire events inside item
+                itemEl.querySelector('.cart-minus')?.addEventListener('click', () => adjustQty(item.id, -1));
+                itemEl.querySelector('.cart-plus')?.addEventListener('click', () => adjustQty(item.id, 1));
+                itemEl.querySelector('.cart-item-remove')?.addEventListener('click', () => removeCartItem(item.id));
+            }
+            
+            // Append child (moves it to the end of the container, maintaining visual order)
+            if (!itemEl.classList.contains('removing')) {
+                cartItemsContainer.appendChild(itemEl);
+            }
         });
     };
 
     const adjustQty = (id, amount) => {
         const item = cart.find(x => x.id === id);
         if (item) {
-            item.cantidad += amount;
-            if (item.cantidad <= 0) {
-                cart = cart.filter(x => x.id !== id);
+            const nextQty = item.cantidad + amount;
+            if (nextQty <= 0) {
+                // Animate removal first
+                const itemEl = cartItemsContainer.querySelector(`.cart-item[data-id="${id}"]`);
+                if (itemEl) {
+                    itemEl.classList.add('removing');
+                    itemEl.addEventListener('animationend', () => {
+                        cart = cart.filter(x => x.id !== id);
+                        saveCart();
+                    });
+                } else {
+                    cart = cart.filter(x => x.id !== id);
+                    saveCart();
+                }
+            } else {
+                item.cantidad = nextQty;
+                saveCart();
             }
-            saveCart();
         }
     };
 
     const removeCartItem = (id) => {
         const item = cart.find(x => x.id === id);
         if (item) {
-            cart = cart.filter(x => x.id !== id);
-            saveCart();
-            showToast(`¡${item.titulo} liberado del buffer!`);
+            // Find element in DOM and animate it first
+            const itemEl = cartItemsContainer.querySelector(`.cart-item[data-id="${id}"]`);
+            if (itemEl) {
+                itemEl.classList.add('removing');
+                itemEl.addEventListener('animationend', () => {
+                    cart = cart.filter(x => x.id !== id);
+                    saveCart();
+                    showToast(`¡${item.titulo} liberado del buffer!`);
+                });
+            } else {
+                cart = cart.filter(x => x.id !== id);
+                saveCart();
+                showToast(`¡${item.titulo} liberado del buffer!`);
+            }
         }
     };
 
@@ -1009,7 +1155,8 @@
                 precio: detail.precio,
                 precioNum: numericPrice,
                 imagen: detail.imagen,
-                cantidad: detail.cantidad
+                cantidad: detail.cantidad,
+                categoria: detail.categoria || ''
             });
         }
         
@@ -1021,9 +1168,25 @@
     if (clearCartBtn) {
         clearCartBtn.addEventListener('click', () => {
             if (cart.length > 0) {
-                cart = [];
-                saveCart();
-                showToast("¡Buffer de memoria purgado!");
+                const items = cartItemsContainer.querySelectorAll('.cart-item');
+                if (items.length > 0) {
+                    let animatedCount = 0;
+                    items.forEach(el => {
+                        el.classList.add('removing');
+                        el.addEventListener('animationend', () => {
+                            animatedCount++;
+                            if (animatedCount === items.length) {
+                                cart = [];
+                                saveCart();
+                                showToast("¡Buffer de memoria purgado!");
+                            }
+                        });
+                    });
+                } else {
+                    cart = [];
+                    saveCart();
+                    showToast("¡Buffer de memoria purgado!");
+                }
             }
         });
     }
